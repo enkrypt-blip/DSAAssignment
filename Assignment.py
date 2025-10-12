@@ -11,12 +11,14 @@ p2 = Patient("1300", "Jarod", 19, "sjnp", 2, "a")
 p3 = Patient("1400", "Josh", 20, "sjnp", 3, "i")
 p4 = Patient("1500", "Makayla", 19, "eng", 5, "a")
 p5 = Patient("1600", "Sophie", 16, "schl", 4, "i")
+p6 = Patient("6767", "Annas", 20, "rcr", 1, "a")
 
 records.put("1200", p1)
 records.put("1300", p2)
 records.put("1400", p3)
 records.put("1500", p4)
 records.put("1600", p5)
+records.put("6767", p6)
 
 while True:
     print("\nMain Menu: ")
@@ -131,6 +133,9 @@ while True:
         while three is True:
             print("\nMenu: ")
             print("1: Insert request")
+            print("2: Remove request")
+            print("3: Check patient priority")
+            print("4: Display schedule")
 
             choice = input("Enter your choice (1): ")
 
@@ -139,6 +144,22 @@ while True:
                 treatment_time = int(input("Enter estimated treatment time: "))
                 patient = records.get(id)
                 scheduler.add_patient(id, patient.urgency, treatment_time)
+
+            elif choice == "2":
+                
+                scheduler.heap.remove()
+
+            elif choice == "3":
+
+                try:
+                    priority = scheduler.getPriority(id)
+                    print(f"Patient {id} has priority {round(priority, 2)}")
+                except Exception as e:
+                    print(f"Error retrieving priority: {e}")
+
+            elif choice == "4":
+                scheduler.heap.display()
+
 
 
     elif mm == "4":

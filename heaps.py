@@ -31,6 +31,12 @@ class Scheduler:
     def display_heap(self):
         self.heap.display()
 
+    def getPriority(self, patient_id):
+        for i in range(self.heap.count):
+            if self.heap.heap_array[i].value.startswith(patient_id):
+                return self.heap.heap_array[i].priority
+        return None
+
 class DSAHeapEntry:
     def __init__(self, priority=None, value=None):
         self.priority = priority
