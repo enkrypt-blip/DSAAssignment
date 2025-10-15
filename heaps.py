@@ -22,11 +22,6 @@ class Scheduler:
             self.heap.display()
         except ValueError as e:
             print(f"Error adding patient {patient_id}: {e}")
-
-    def next_patient(self):
-        removed = self.heap.remove()
-        if removed:
-            print(f"[Next Patient] {removed.value} (Priority: {removed.priority})")
         
     def display_heap(self):
         self.heap.display()
@@ -36,6 +31,33 @@ class Scheduler:
             if self.heap.heap_array[i].value.startswith(patient_id):
                 return self.heap.heap_array[i].priority
         return None
+    
+    def update_patient_priority(self, patient_id, new_urgency):
+        found = False
+        for i in range(self.heap.count):
+            entry = self.heap.heap_array[i]
+            if entry and entry.value.startswith(patient_id):
+                found = True
+                try:
+                    parts = entry.value.split(",")
+                    treatment_time_str = parts[-1].split(":")[1].strip()
+                    treatment_time = int(treatment_time_str)
+                except Exception:
+                    print(f"Could not parse treatment time from {entry.value}")
+
+                new_priority = self.compute_priority(new_urgency, treatment_time)
+                new_value = f"{patient_id}, Urgency: {new_urgency}, Time: {treatment_time}"
+
+                entry.priority = new_priority
+                entry.value = new_value
+
+                self.heap.heapify(self.heap.heap_array, self.heap.count)
+                print(f"\n[Updated] {patient_id} urgency --> {new_urgency} | New Priority: {round(new_priority, 2)}")
+                break
+
+        if not found:
+            print(f"Patient {patient_id} not found.")
+
 
 class DSAHeapEntry:
     def __init__(self, priority=None, value=None):
@@ -102,6 +124,14 @@ class DSAHeap():
             return root
         except Exception as e:
             print(f"Error removing from scheduler: {e}")
+
+    def peek(self):
+        try:
+            if self.count == 0:
+                raise Exception("Scheduler is empty")
+            return self.heap_array[0].value
+        except Exception as e:
+            print(f"Error peeking at scheduler: {e}")
 
     def display(self):
         try:
@@ -178,56 +208,4 @@ class DSAHeap():
                     file.write(f"{sortedHeap[i].priority},{sortedHeap[i].value}\n")
             print("Heap saved to CSV successfully.")
         except Exception as e:
-            print(f"Error saving to CSV: {e}") 
-                
-def main():
-    print("Heaps user interface")
-    try:
-        size = int(input("What will be the size of the heap? "))
-        if size <= 0:
-            raise ValueError("Heap size must be a positive integer")
-        scheduler = Scheduler(size)
-    except ValueError as err:
-        print(f"Error: {err} using default heap of 10000")
-        scheduler = Scheduler(10000)
-
-    while True:
-        print("\nOptions:")
-        print("1: Add to heap")
-        print("2: Remove from heap")
-        print("3: Display heap")  
-        print("4: Load from CSV")
-        print("5: Save to CSV")
-        print("6: Exit")
-
-        choice = input("Enter your choice (1-6): ")
-
-        try:
-            if choice == '1':
-                priority = input("Enter priority: ")
-                value = input("Enter value: ")
-
-            elif choice == '3':
-                print("Heap contents: ")
-
-
-            elif choice == '4':
-                filename = input("Enter CSV file name to load: ")
-                print("CSV successfully loaded")
-
-            elif choice == '5':
-                filename = input("Enter CSV to save to: ")
-                print("Heap saved to CSV")      
-
-            elif choice == '6':
-                print("Exitting program")
-                break
-
-            else:
-                print("Invalid option")
-
-        except Exception as err:
-            print(f"An error: {err} occured")
-
-if __name__ == "__main__":
-    main()
+            print(f"Error saving to CSV: {e}")

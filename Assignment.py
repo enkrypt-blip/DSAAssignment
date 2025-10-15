@@ -134,10 +134,13 @@ while True:
             print("\nMenu: ")
             print("1: Insert request")
             print("2: Remove request")
-            print("3: Check patient priority")
-            print("4: Display schedule")
+            print("3: Peek at next patient")
+            print("4: Check patient priority")
+            print("5: Update urgency level")
+            print("6: Display schedule")
+            print("7: Back")
 
-            choice = input("Enter your choice (1): ")
+            choice = input("Enter your choice (1-6): ")
 
             if choice == "1":
                 id = input("Enter the patient ID: ")
@@ -146,10 +149,19 @@ while True:
                 scheduler.add_patient(id, patient.urgency, treatment_time)
 
             elif choice == "2":
-                
-                scheduler.heap.remove()
+                try:
+                    scheduler.heap.remove()
+                except Exception as e:
+                    print(f"Error removing patient: {e}")
 
             elif choice == "3":
+                try:
+                    next_patient = scheduler.heap.peek()
+                    print(f"Next patient: {next_patient}")
+                except Exception as e:
+                    print(f"Error peeking at next patient: {e}")
+
+            elif choice == "4":
 
                 try:
                     priority = scheduler.getPriority(id)
@@ -157,10 +169,22 @@ while True:
                 except Exception as e:
                     print(f"Error retrieving priority: {e}")
 
-            elif choice == "4":
+            elif choice == "5":
+                id = input("Enter the patient ID: ")
+                new_urgency = int(input("Enter the new urgency level (1-5): "))
+                scheduler.update_patient_priority(id, new_urgency)
+
+            elif choice == "6":
                 scheduler.heap.display()
 
-
+            elif choice == "7":
+                three = False
+                break
 
     elif mm == "4":
         print("LMAO this dont work either")
+    
+    elif mm == "5":
+        print("Exitting program...")
+        break
+
