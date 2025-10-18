@@ -49,7 +49,7 @@ def mergeSortRecurse(A, leftIdx, rightIdx):
         return A
 
 def merge(A, leftIdx, midIdx, rightIdx):
-    tempArr = np.zeros(rightIdx - leftIdx + 1)
+    tempArr = np.zeros(rightIdx - leftIdx + 1, dtype=object)
     i = leftIdx
     j = midIdx + 1
     k = 0

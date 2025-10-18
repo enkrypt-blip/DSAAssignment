@@ -1,17 +1,18 @@
 from graphs import *
 from hashes import *
 from heaps import *
+from DSAsorts import *
 
 hospital = DSAGraph()
 records = DSAHashTable(20)
 scheduler = Scheduler(100)
 
-p1 = Patient("1200", "Ankur", 19, "eng", 5, "a")
-p2 = Patient("1300", "Jarod", 19, "sjnp", 2, "a")
-p3 = Patient("1400", "Josh", 20, "sjnp", 3, "i")
-p4 = Patient("1500", "Makayla", 19, "eng", 5, "a")
-p5 = Patient("1600", "Sophie", 16, "schl", 4, "i")
-p6 = Patient("6767", "Annas", 20, "rcr", 1, "a")
+p1 = Patient("1200", "Ankur", 19, "eng", 5, "a", 10)
+p2 = Patient("1300", "Jarod", 19, "sjnp", 2, "a", 20)
+p3 = Patient("1400", "Josh", 20, "sjnp", 3, "i", 30)
+p4 = Patient("1500", "Makayla", 19, "eng", 5, "a", 40)
+p5 = Patient("1600", "Sophie", 16, "schl", 4, "i", 50)
+p6 = Patient("6767", "Annas", 20, "rcr", 1, "a", 60)
 
 records.put("1200", p1)
 records.put("1300", p2)
@@ -108,8 +109,9 @@ while True:
                     age = int(input("Age: "))
                     dept = input("Department: ")
                     urg = int(input("Urgency level (1-5): "))
-                    status = input("Status: ")  
-                    p = Patient(id, name, age, dept, urg, status)
+                    status = input("Status: ")
+                    time = int(input("Estimated treatment time: "))  
+                    p = Patient(id, name, age, dept, urg, status, time)
                     records.put(p.id, p)
                     print("Entry added/updated.")
                 
@@ -182,8 +184,29 @@ while True:
                 break
 
     elif mm == "4":
-        print("LMAO this dont work either")
-    
+        while True:
+            print("\nMenu: ")
+            print("1: Quick Sort")
+            print("2: Merge Sort")
+            print("3: Back")
+
+            choice = input("Enter your choice (1-3): ")
+            
+            if choice == "1":
+                times = records.getAllTimes()
+                print(f"Unsorted times: {times}")
+                sorted_times = quickSortMedian3(times)
+                print(f"Sorted times: {sorted_times}")
+
+            elif choice == "2":
+                times = records.getAllTimes()
+                print(f"Unsorted times: {times}")
+                sorted_times = mergeSort(times)
+                print(f"Sorted times: {sorted_times}")
+
+            elif choice == "3":
+                break   
+             
     elif mm == "5":
         print("Exitting program...")
         break

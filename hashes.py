@@ -2,18 +2,20 @@ import numpy as np
 import csv
 
 class Patient:
-    def __init__(self, id, name, age, dept, urgency, treatment_status):
+    def __init__(self, id, name, age, dept, urgency, treatment_status, treatment_time=1):
         self.id = id
         self.name = name
         self.age = age
         self.dept = dept
         self.urgency = int(urgency)
         self.treatment_status = treatment_status
+        self.treatment_time = int(treatment_time)
     
     def __str__(self):
         return (f"ID: {self.id}, Name: {self.name}, Age: {self.age}, "
                 f"Dept: {self.dept}, Urgency: {self.urgency}, "
                 f"Status: {self.treatment_status}")
+    
 
 class DSAHashEntry:
     def __init__(self, key="", value=None):
@@ -144,3 +146,10 @@ class DSAHashTable:
         
     def loadFactor(self):
         return self.count / self.actualSize
+    
+    def getAllTimes(self):
+        durations = []
+        for entry in self.hashArray:
+            if entry.state == 1 and isinstance(entry.value, Patient):
+                durations.append(int(entry.value.treatment_time))
+        return durations
