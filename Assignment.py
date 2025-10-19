@@ -186,7 +186,7 @@ while True:
     elif mm == "4":
         while True:
             print("\nMenu: ")
-            print("1: Quick Sort")
+            print("1: Quick Sort (Median of 3)")
             print("2: Merge Sort")
             print("3: Back")
 
@@ -194,13 +194,11 @@ while True:
             
             if choice == "1":
                 times = records.getAllTimes()
-                print(f"Unsorted times: {times}")
                 sorted_times = quickSortMedian3(times)
                 print(f"Sorted times: {sorted_times}")
 
             elif choice == "2":
                 times = records.getAllTimes()
-                print(f"Unsorted times: {times}")
                 sorted_times = mergeSort(times)
                 print(f"Sorted times: {sorted_times}")
 
