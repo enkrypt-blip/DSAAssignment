@@ -32,65 +32,67 @@ while True:
     mm = input("Enter your module: ")
 
     if mm == "1":
-        print("\nMenu:")
-        print("1: Add department")
-        print("2: Remove department")
-        print("3: Add corridor between departments")
-        print("4: Remove corridor between departments")
-        print("5: Display as list")
-        print("6: Breadth first search with levels")
-        print("7: Depth first search with cycle detection")
-        print("8: Shortest path algorithm")
-        print("9: Exit program")
+        one = True
+        while one is True:
+            print("\nMenu:")
+            print("1: Add department")
+            print("2: Remove department")
+            print("3: Add corridor between departments")
+            print("4: Remove corridor between departments")
+            print("5: Display as list")
+            print("6: Breadth first search with levels")
+            print("7: Depth first search with cycle detection")
+            print("8: Shortest path algorithm")
+            print("9: Back")
 
-        choice = input("Enter your choice (1-9): ")
+            choice = input("Enter your choice (1-9): ")
 
-        try:
-            if choice == "1":
-                dept = input("Enter new department: ")
-                hospital.addVertex(dept)
-                print(f"{dept} added.")
-            
-            elif choice == "2":
-                dept = input("Enter the department to be deleted: ")
-                hospital.deleteVertex(dept)
-                print(f"{dept} removed.")
-
-            elif choice == "3":
-                start = input("Enter the start department: ")
-                end = input("Enter the end department: ")
-                lenght = float(input("Enter the lenght of the corridor: "))
-                hospital.addEdge(start, end, lenght)
-                print(f"Corridor added between {start} and {end}.")
-
-            elif choice == "4":
-                start = input("Enter the 'from' department: ")
-                end = input("Enter the 'to' department: ")
-                hospital.deleteEdge(start, end)
-
-            elif choice == "5":
-                hospital.displayAsList()
-
-            elif choice == "6":
-                start = input("Enter the start department: ")
-                hospital.BFS(start)
+            try:
+                if choice == "1":
+                    dept = input("Enter new department: ")
+                    hospital.addVertex(dept)
+                    print(f"{dept} added.")
                 
-            elif choice == "7":
-                start = input("Enter the start department: ")
-                hospital.DFS()
-                hospital.DFS_cycle_detect()
-            
-            elif choice == "8":
-                start = input("Enter the 'from' department: ")
-                end = input("Enter the 'to' department: ")
-                hospital.dijkstra(start, end)
-            
-            elif choice == "9":
-                print("Exitting program...")
-                break
+                elif choice == "2":
+                    dept = input("Enter the department to be deleted: ")
+                    hospital.deleteVertex(dept)
+                    print(f"{dept} removed.")
 
-        except Exception as err:
-            print(f"Error: {err}")
+                elif choice == "3":
+                    start = input("Enter the start department: ")
+                    end = input("Enter the end department: ")
+                    lenght = float(input("Enter the lenght of the corridor: "))
+                    hospital.addEdge(start, end, lenght)
+                    print(f"Corridor added between {start} and {end}.")
+
+                elif choice == "4":
+                    start = input("Enter the 'from' department: ")
+                    end = input("Enter the 'to' department: ")
+                    hospital.deleteEdge(start, end)
+
+                elif choice == "5":
+                    hospital.displayAsList()
+
+                elif choice == "6":
+                    start = input("Enter the start department: ")
+                    hospital.BFS(start)
+                    
+                elif choice == "7":
+                    start = input("Enter the start department: ")
+                    hospital.DFS()
+                    hospital.DFS_cycle_detect()
+                
+                elif choice == "8":
+                    start = input("Enter the 'from' department: ")
+                    end = input("Enter the 'to' department: ")
+                    hospital.dijkstra(start, end)
+                
+                elif choice == "9":
+                    one = False
+                    break
+
+            except Exception as err:
+                print(f"Error: {err}")
         
     elif mm == "2":
         two = True
@@ -184,7 +186,8 @@ while True:
                 break
 
     elif mm == "4":
-        while True:
+        four = True
+        while four is True:
             print("\nMenu: ")
             print("1: Quick Sort (Median of 3)")
             print("2: Merge Sort")
@@ -203,6 +206,7 @@ while True:
                 print(f"Sorted times: {sorted_times}")
 
             elif choice == "3":
+                four = False
                 break   
              
     elif mm == "5":
