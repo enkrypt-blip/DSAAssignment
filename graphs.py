@@ -1,26 +1,27 @@
+# Most of the graph code is adapted from previous labs and modified to fit the hospital context
 from LinkedList import *
 from stacksandqueues import *
 
-
+# Graph class using adjacency list representation
 class DSAGraph:
     def __init__(self):
         self.vertex = DSALinkedList()
 
-
+# Get vertex by label
     def getVertex(self, label):
         for v in self.vertex:
             if v.getLabel() == label:
                 return v
         return None
 
-
+# Add vertex to graph
     def addVertex(self, label, value=None):
         if self.getVertex(label) is not None:
             raise Exception('Department already exists')
         newVertex = DSAGraphVertex(label, value)
         self.vertex.insertLast(newVertex)
 
-
+# Add edge between two vertices
     def addEdge(self, fromLabel, toLabel, weight):
         fromVertex = self.getVertex(fromLabel)
         toVertex = self.getVertex(toLabel)
@@ -39,7 +40,7 @@ class DSAGraph:
         fromVertex.getAdjacent().insertLast(edge1)
         toVertex.getAdjacent().insertLast(edge2)
 
-
+# Delete vertex and its associated edges
     def deleteVertex(self, label):
         vertex = self.getVertex(label)
         if vertex is None:
@@ -57,7 +58,7 @@ class DSAGraph:
         while not tempList.isEmpty():
             self.vertex.insertLast(tempList.removeFirst())
 
-
+# Delete edge between two vertices
     def deleteEdge(self, fromLabel, toLabel):
         fromVertex = self.getVertex(fromLabel)
         toVertex = self.getVertex(toLabel)
@@ -69,7 +70,7 @@ class DSAGraph:
         self.removeEdge(fromVertex.getAdjacent(), toVertex)
         self.removeEdge(toVertex.getAdjacent(), fromVertex)
 
-
+# Helper method to remove edge from adjacency list
     def removeEdge(self, adjList, targetVertex):    
         temp = DSALinkedList()
         while not adjList.isEmpty():
@@ -80,7 +81,7 @@ class DSAGraph:
             adjList.insertLast(temp.removeFirst())
 
 
-
+# Display graph as adjacency list
     def displayAsList(self):
         for vertex in self.vertex:
             print("Department: ",vertex.getLabel(), "|", end=" ")
@@ -90,7 +91,7 @@ class DSAGraph:
                 print(f"{toVertex.getLabel()} (lenght = {weight})", end=" ")
             print()
 
-
+# Breadth-First Search (BFS) traversal with level tracking
     def BFS(self,reference):
         T = DSAQueue()
         Q = DSAQueue()
@@ -131,6 +132,7 @@ class DSAGraph:
             print(f"{fromVertex.getLabel()} -> {toVertex.getLabel()} (Level {edgeLevel})")
         print()
 
+# Depth-First Search (DFS) traversal
     def DFS(self, reference):
         T = DSAQueue()
         S = DSAStack()
@@ -165,7 +167,6 @@ class DSAGraph:
             print(v.getLabel(), end=" ")
         print()
 
-# DFS cycle detect needs to be updated to list ALL cycles
 
     def DFS_cycle_detect(self):
         # Clear visited and parent for all vertices
@@ -207,6 +208,7 @@ class DSAGraph:
         print("No cycle detected")
         return None
 
+# Dijkstra's algorithm for shortest path: Source: https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/
     def dijkstra(self, startLabel, endLabel):
         startVertex = self.getVertex(startLabel)
         endVertex = self.getVertex(endLabel)
@@ -247,7 +249,6 @@ class DSAGraph:
                         neighbor.setDistance(newDist)
                         neighbor.setPrevious(current)
 
-        # Reconstruct path
         path = []
         curr = endVertex
         while curr is not None:
@@ -262,7 +263,7 @@ class DSAGraph:
             print(" -> ".join(path))
             print(f"Total distance: {distance}")
 
-
+# Helper function to sort adjacency list based on toVertex label
 def sortAdjacentList(adjList):
     sortedList = DSALinkedList()
 
@@ -285,6 +286,7 @@ def sortAdjacentList(adjList):
 
     return sortedList
 
+# DSAGraphVertex class
 class DSAGraphVertex:
     def __init__(self, label, value=None):
         self.label = label
@@ -333,6 +335,7 @@ class DSAGraphVertex:
     def toString(self):
         return f"Label: {self.label}, Value: {self.value}"
 
+# DSAGraphEdge class
 class DSAGraphEdge:
     def __init__(self, fromVertex, toVertex, weight):
         self.fromVertex = fromVertex

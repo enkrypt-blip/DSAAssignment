@@ -1,42 +1,14 @@
-#
-# Data Structures and Algorithms COMP1002
-#
+
 # Python file to hold all sorting methods
-#
+
 
 import numpy as np
-
-def bubbleSort(A):
-    n = len(A)
-    for i in range(1, n):
-        for j in range(0, n-1):
-            if A[j] > A[j+1]:
-                A[j], A[j+1] = A[j+1], A[j]
-
-def insertionSort(A):
-    n = len(A)
-    for i in range(1, n-1):
-        j = i
-        while j > 0 and A[j-1] > A[j]:
-            A[j], A[j-1] = A[j-1], A[j]
-            j -= 1
-
-def selectionSort(A):
-    n = len(A)
-    for j in range(0, n - 1):
-        iMin = j
-        for i in range(j + 1, n - 1):
-            if A[i] < A[iMin]:
-                iMin = i
-        if iMin != j:
-            A[j], A[iMin] = A[iMin], A[j]
-
-        
-
+    # Merge sort algorithm
 def mergeSort(A):
     mergeSortRecurse(A, 0, len(A) - 1)
     return A
 
+# Recursive helper for merge sort
 def mergeSortRecurse(A, leftIdx, rightIdx):
     if leftIdx < rightIdx:
         midIdx = (leftIdx + rightIdx) // 2
@@ -48,6 +20,7 @@ def mergeSortRecurse(A, leftIdx, rightIdx):
     else:
         return A
 
+# Merge two sorted halves
 def merge(A, leftIdx, midIdx, rightIdx):
     tempArr = np.zeros(rightIdx - leftIdx + 1, dtype=object)
     i = leftIdx
@@ -76,12 +49,14 @@ def merge(A, leftIdx, midIdx, rightIdx):
     
     return A
 
+# Quick sort algorithm
 def quickSort(A):
     """ quickSort - front-end for kick-starting the recursive algorithm
     """
     quickSortRecurse(A, 0, len(A) - 1)
     return A
 
+# Recursive helper for quick sort
 def quickSortRecurse(A, leftIdx, rightIdx):
     if rightIdx > leftIdx: 
         pivotIdx = leftIdx  
@@ -93,6 +68,7 @@ def quickSortRecurse(A, leftIdx, rightIdx):
     else: 
         return A
 
+# Partitioning logic for quick sort
 def doPartitioning(A, leftIdx, rightIdx, pivotIdx):
     pivotVal = A[pivotIdx]
     A[pivotIdx] = A[rightIdx]
@@ -112,12 +88,14 @@ def doPartitioning(A, leftIdx, rightIdx, pivotIdx):
 
     return newPivotIdx
 
+# Quick sort with median-of-three pivot selection
 def quickSortMedian3(A):
     """ quickSort - front-end for kick-starting the recursive algorithm
     """
     quickSortMedian3Recurse(A, 0, len(A) - 1)
     return A
 
+# Recursive helper for quick sort with median-of-three
 def quickSortMedian3Recurse(A, leftIdx, rightIdx):
     if rightIdx > leftIdx: 
         midIdx = (leftIdx + rightIdx) // 2
@@ -129,6 +107,7 @@ def quickSortMedian3Recurse(A, leftIdx, rightIdx):
     else: 
         return A
     
+# Find median of three for pivot selection  
 def medianOf3(A, leftIdx, midIdx, rightIdx):
     a = A[leftIdx]
     b = A[midIdx]
@@ -141,12 +120,13 @@ def medianOf3(A, leftIdx, midIdx, rightIdx):
     else:
         return rightIdx
     
+# Quick sort with random pivot selection
 def quickSortRandom(A):
     """ quickSort - front-end for kick-starting the recursive algorithm
     """
     quickSortRandomRecurse(A, 0, len(A) - 1)
     return A
-
+# Recursive helper for quick sort with random pivot
 def quickSortRandomRecurse(A, leftIdx, rightIdx):
     if rightIdx > leftIdx: 
         import random
@@ -158,3 +138,4 @@ def quickSortRandomRecurse(A, leftIdx, rightIdx):
     
     else: 
         return A
+    

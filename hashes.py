@@ -1,6 +1,7 @@
 import numpy as np
 import csv
 
+# Patient class to hold patient details
 class Patient:
     def __init__(self, id, name, age, dept, urgency, treatment_status, treatment_time=1):
         self.id = id
@@ -14,15 +15,16 @@ class Patient:
     def __str__(self):
         return (f"ID: {self.id}, Name: {self.name}, Age: {self.age}, "
                 f"Dept: {self.dept}, Urgency: {self.urgency}, "
-                f"Status: {self.treatment_status}")
-    
+                f"Status: {self.treatment_status}")  
 
+# Hash entry class to hold key-value pairs and state
 class DSAHashEntry:
     def __init__(self, key="", value=None):
         self.key = key
         self.value = value
         self.state = 0
 
+# Hash table class with linear probing
 class DSAHashTable:
     def __init__(self, tableSize):
         self.count = 0
@@ -31,6 +33,7 @@ class DSAHashTable:
         for i in range(self.actualSize):
             self.hashArray[i] = DSAHashEntry()
 
+# Put method to insert key-value pairs
     def put(self, key, value, inserting=True):
         if (self.count + 1)/ self.actualSize > 0.7:
             self.resize(self.actualSize * 2)
@@ -42,16 +45,19 @@ class DSAHashTable:
         self.hashArray[index].value = value
         self.hashArray[index].state = 1
 
+# Get method to retrieve value by key
     def get(self,key):
         index = self.findSlot(key)
         if self.hashArray[index].state != 1:
             raise Exception("Key not found")
         return self.hashArray[index].value
 
+# Method to check if key exists
     def hasKey(self, key):
         index = self.findSlot(key)
         return self.hashArray[index].state == 1
 
+# Remove method to delete key-value pair
     def remove(self, key):
         index = self.findSlot(key)
         if self.hashArray[index].state == 1:
@@ -62,7 +68,7 @@ class DSAHashTable:
             if self.count / self.actualSize < 0.3:
                 self.resize(max(7, self.actualSize // 2))
 
-# Simple hashing function where the hash index is multiplied by 31 and added by the character unicode point.
+# Simple hashing function where the hash index is multiplied by 33 and added by the character unicode point.
     def hash(self,key): 
         table_size = self.actualSize
         hash_idx = 0
@@ -70,7 +76,7 @@ class DSAHashTable:
             hash_idx = (33 * hash_idx + ord(char)) & 0xFFFFFFFF #simulates 32 bit overflow keeping the number under 32 bits for speed
         return hash_idx % table_size
 
-# Linear probing
+# Linear probing to find the appropriate slot for a key
     def findSlot(self, key, inserting=False):
         hashIdx = self.hash(key)
         origIdx = hashIdx
@@ -94,6 +100,7 @@ class DSAHashTable:
             raise Exception("Hash table is full")
         return hashIdx
 
+# Method to find the next prime number greater than or equal to n
     def nextPrime(self, n):
         def is_prime(x):
             if x < 2: return False
@@ -119,34 +126,11 @@ class DSAHashTable:
             if oldArray[i].state == 1:
                 self.put(oldArray[i].key, oldArray[i].value)
 
-    def saveCSV(self, filename):
-        try:
-            with open(filename, 'w', newline='') as file:
-                writer = csv.writer(file)
-                for entry in self.hashArray:
-                    if entry.state == 1 and isinstance(entry.value, Patient):
-                        p = entry.value
-                        writer.writerow([p.id, p.name, p.age, p.dept, p.urgency, p.treatment_status])
-        except Exception as e:
-            print(f"Error saving: {e}")
-   
-
-    def loadCSV(self, filename):
-        try:
-            with open(filename, 'r', newline='') as file:
-                reader = csv.reader(file)
-                for line in reader:
-                    if len(line) == 2:
-                        key, value = line
-                        self.put(key, value)
-        except FileNotFoundError:
-            print(f"File '{filename}' not found.")
-        except Exception as e:
-            print(f"Failed to load CSV: {e}")
-        
+# Method to calculate load factor        
     def loadFactor(self):
         return self.count / self.actualSize
-    
+
+# Method to get all treatment times of patients in the hash table
     def getAllTimes(self):
         durations = []
         for entry in self.hashArray:

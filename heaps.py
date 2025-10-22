@@ -1,10 +1,11 @@
 import numpy as np
-import csv
 
+# Scheduler class to manage patient scheduling using a max-heap
 class Scheduler:
     def __init__(self, max_size=100):
         self.heap = DSAHeap(max_size)
 
+# Method to compute priority based on urgency and treatment time
     def compute_priority(self, urgency, treatment_time):
         if treatment_time <= 0:
             raise ValueError("Please enter a valid treatment time.")
@@ -12,7 +13,7 @@ class Scheduler:
             raise ValueError("Please enter a value between 1 and 5")
         return (6- urgency) + (1000/treatment_time)
     
-    
+# Wrapper method to add a patient to the scheduler
     def add_patient(self, patient_id, urgency, treatment_time):
         try:
             priority = self.compute_priority(urgency, treatment_time)
@@ -22,16 +23,19 @@ class Scheduler:
             self.heap.display()
         except ValueError as e:
             print(f"Error adding patient {patient_id}: {e}")
-        
+
+# Wrapper display the current heap     
     def display_heap(self):
         self.heap.display()
 
+# Get the priority of a patient by their ID
     def getPriority(self, patient_id):
         for i in range(self.heap.count):
             if self.heap.heap_array[i].value.startswith(patient_id):
                 return self.heap.heap_array[i].priority
         return None
-    
+
+# Update a patient's priority based on new urgency
     def update_patient_priority(self, patient_id, new_urgency):
         found = False
         for i in range(self.heap.count):
@@ -58,7 +62,7 @@ class Scheduler:
         if not found:
             print(f"Patient {patient_id} not found.")
 
-
+# DSAHeapEntry class to represent each entry in the heap
 class DSAHeapEntry:
     def __init__(self, priority=None, value=None):
         self.priority = priority
@@ -91,18 +95,22 @@ class DSAHeapEntry:
             return NotImplemented
         return self.priority == other.priority
 
-
+# DSAHeap class to implement a max-heap
 class DSAHeap():
     def __init__(self, max_size=10000):
         self.heap = DSAHeapEntry()
         self.heap_array = np.zeros(max_size, dtype=object)
         self.count = 0
         self.max_size = max_size
-    
+
+# Method to add a new entry to the heap
     def add(self, priority, value):
         try:
             if self.count == self.max_size:
                 raise Exception("Scheduler is full")
+            for i in range(self.count):
+                if self.heap_array[i] is not None and self.heap_array[i].value == value:
+                    raise Exception("Patient already in scheduler")
             priority = int(priority)
             newEntry = DSAHeapEntry(priority, value)
             self.heap_array[self.count] = newEntry
@@ -113,6 +121,7 @@ class DSAHeap():
         except Exception as err:
             print(f"Error adding to scheduler: {err}")
 
+# Method to remove and return the highest priority entry
     def remove(self):
         try:
             if self.count == 0:
@@ -125,6 +134,7 @@ class DSAHeap():
         except Exception as e:
             print(f"Error removing from scheduler: {e}")
 
+# Peek at the highest priority entry without removing it
     def peek(self):
         try:
             if self.count == 0:
@@ -133,6 +143,7 @@ class DSAHeap():
         except Exception as e:
             print(f"Error peeking at scheduler: {e}")
 
+# Display the current heap entries
     def display(self):
         try:
             if self.count == 0:
@@ -142,7 +153,8 @@ class DSAHeap():
                     print(f"Priority: {self.heap_array[i].priority}, Patient ID: {self.heap_array[i].value}")
         except Exception as e:
             print(f"Error displaying scheduler: {e}")
-    
+
+   # Trickle up to maintain heap property after insertion 
     def trickleUp(self, heap_array, currIdx):
         parentIdx = (currIdx - 1) // 2
         while currIdx > 0 and heap_array[currIdx] > heap_array[parentIdx]:
@@ -150,6 +162,7 @@ class DSAHeap():
             self.trickleUp(heap_array, parentIdx)
         return heap_array
     
+    # Trickle down to maintain heap property after removal
     def trickleDown(self, heap_array, currIdx, count):
         lChildIdx = currIdx * 2 + 1
         rChildIdx = lChildIdx + 1
@@ -163,17 +176,20 @@ class DSAHeap():
                 self.swap(heap_array, largeIdx, currIdx)
                 self.trickleDown(heap_array, largeIdx, count)
 
+# Swap two entries in the heap array
     def swap(self, heap_array, idx1, idx2):
         temp = heap_array[idx1]
         heap_array[idx1] = heap_array[idx2]
         heap_array[idx2] = temp
         return heap_array
-    
+
+# Method to build the heap from an arbitrary array
     def heapify(self, heap_array, numItems):
         for i in range(numItems // 2 - 1, -1, -1):
             self.trickleDown(heap_array, i, numItems)
         return self.heap_array
     
+    # Method to perform heapsort on the heap array
     def heapsort(self, heap_array, numItems):
         self.heapify(heap_array, numItems)
         for i in range(numItems-1, 0, -1):
@@ -181,31 +197,3 @@ class DSAHeap():
             self.trickleDown(heap_array, 0, i)
         return heap_array
     
-
-    def load_csv(self, filename):
-        try:
-            with open(filename, mode='r', newline='') as csvfile:
-                reader = csv.reader(csvfile)
-                for row in reader:
-                    if len(row) >= 2:
-                        self.add(row[0],row[1])
-                    else:
-                        print(f"Skipping invalid row: {row}")
-            self.heapify(self.heap_array, self.count)
-
-        except FileNotFoundError:
-            print(f"File '{filename}' not found.")
-        except ValueError:
-            print("Error: Invalid data format in CSV.")
-        except Exception as err:
-            print(f"Failed to load CSV: {err}")
-
-    def saveCSV(self, filename):
-        try:
-            sortedHeap = self.heapsort(self.heap_array[:self.count], self.count)[::-1]
-            with open(filename, 'w') as file:
-                for i in range(self.count):
-                    file.write(f"{sortedHeap[i].priority},{sortedHeap[i].value}\n")
-            print("Heap saved to CSV successfully.")
-        except Exception as e:
-            print(f"Error saving to CSV: {e}")
