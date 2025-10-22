@@ -1,5 +1,6 @@
+# Large parts of the code come from pseudo code provided in lectures and labs
 import numpy as np
-import csv
+
 
 # Patient class to hold patient details
 class Patient:

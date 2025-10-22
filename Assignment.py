@@ -1,4 +1,5 @@
 # Assignment main program which integrates all modules and performs operations based on user input
+# Large parts of the code come from pseudo code provided in lectures and labs
 from graphs import *
 from hashes import *
 from heaps import *

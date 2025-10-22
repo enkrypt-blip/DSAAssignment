@@ -1,4 +1,5 @@
 # Most of the graph code is adapted from previous labs and modified to fit the hospital context
+# Large parts of the code come from pseudo code provided in lectures and labs
 from LinkedList import *
 from stacksandqueues import *
 

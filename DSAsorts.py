@@ -1,4 +1,4 @@
-
+# Large parts of the code come from pseudo code provided in lectures and labs
 # Python file to hold all sorting methods
 
 
